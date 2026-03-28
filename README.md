@@ -77,6 +77,15 @@ npx get-shit-done-cc@latest --claude --codex --global
 
 这个模板默认就是围绕 GSD 的 `.planning/`、phase、verify-work 来组织的。
 
+模板还自带默认 GSD 配置：
+
+- `mode: yolo`
+- `parallelization: true`
+- `workflow.auto_advance: true`
+- `git.branching_strategy: phase`
+
+见 [config.json](/Users/mac/Desktop/2026-money/opc/my-template/.planning/config.json)。
+
 ### 2. Superpowers
 
 如果你走这个模板的推荐流，`superpowers` 基本属于必装。

@@ -31,6 +31,7 @@ const REQUIRED_FILES = [
   '.mcp.json',
   '.gitignore',
   'README.md',
+  '.planning/config.json',
   'scripts/bootstrap-gsd.sh',
   'scripts/start-new-project.sh',
   'scripts/clean-runtime.sh',
@@ -118,6 +119,20 @@ if (gitignore.includes('docs/plans/*.md')) {
   allPassed = false;
 } else {
   console.log('✅ docs/plans markdown files are versionable');
+}
+
+try {
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '.planning/config.json'), 'utf8'));
+  const configOk = config.mode === 'yolo' && config.parallelization === true && config.workflow && config.workflow.auto_advance === true;
+  if (configOk) {
+    console.log('✅ GSD config defaults are automation-friendly');
+  } else {
+    console.log('❌ GSD config is missing yolo/parallelization/auto_advance defaults');
+    allPassed = false;
+  }
+} catch (e) {
+  console.log(`❌ Unable to validate .planning/config.json: ${e.message}`);
+  allPassed = false;
 }
 
 console.log('\n' + (allPassed ? '✅ All tests passed!' : '❌ Some tests failed'));
