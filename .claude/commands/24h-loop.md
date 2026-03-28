@@ -12,14 +12,15 @@ Use this command when the project already has `.planning/` state and you want Cl
 ```text
 /gsd:new-project
 /gsd:plan-phase <phase>
-/execute-codex-phase <phase>
+/gsd:execute-phase <phase>
 /gsd:verify-work <phase>
 ```
 
 ## Default Behavior
 
 - Claude handles planning, escalation, and final verification.
-- Codex workers handle implementation and retry loops.
+- GSD handles phase orchestration, commits, and summary lifecycle.
+- Codex remains the preferred implementation model inside the broader workflow.
 - The runtime uses up to 4 worker slots by default.
 - Execution must happen on a non-`main` branch.
 
@@ -28,15 +29,15 @@ Use this command when the project already has `.planning/` state and you want Cl
 ```text
 /24h-loop 1
 → confirm you are not on main
-→ run /execute-codex-phase 1
-→ inspect /codex-status
+→ run /gsd:execute-phase 1
+→ inspect /gsd:progress
 → return for /gsd:verify-work 1 when wave execution is clean
 ```
 
 For unattended monitoring:
 
 ```text
-/loop 10m /codex-status
+/loop 10m /gsd:progress
 ```
 
 ## Operator Rules

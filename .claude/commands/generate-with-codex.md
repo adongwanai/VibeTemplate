@@ -5,6 +5,8 @@ model: sonnet
 
 # Generate with Codex Command
 
+> Secondary path. Prefer the GSD phase flow for the main project execution path.
+
 Generate code using Codex (GPT-5.4) via MCP tools with intensity control.
 
 ## When to Use

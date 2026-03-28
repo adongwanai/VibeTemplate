@@ -5,7 +5,13 @@ model: sonnet
 
 # Codex Status
 
-Use this command to inspect runtime health without replanning the project.
+Use this command to inspect the optional Codex bridge runtime.
+
+For the main project flow, prefer:
+
+```text
+/gsd:progress
+```
 
 ## Read
 

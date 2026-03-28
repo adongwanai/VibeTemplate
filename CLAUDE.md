@@ -23,7 +23,7 @@ The goal is to keep Claude off the per-task hot path while still using it where 
 ```text
 /gsd:new-project
 /gsd:plan-phase <phase>
-/execute-codex-phase <phase>
+/gsd:execute-phase <phase>
 /gsd:verify-work <phase>
 ```
 
@@ -69,7 +69,7 @@ Use Superpowers around the edges:
 
 - 包管理器默认 `npm`
 - 规划默认走 GSD
-- 执行默认走 Codex runner
+- 执行默认走 GSD execute-phase
 - 验证默认先局部，再 wave，再 phase
 
 ### Permission Posture
@@ -106,5 +106,17 @@ Then in Claude Code:
 ```text
 /gsd:new-project
 /gsd:plan-phase 1
-/execute-codex-phase 1
+/gsd:execute-phase 1
 ```
+
+## Advanced Bridge
+
+`/execute-codex-phase` is retained as an advanced bridge for cases where you explicitly want to route a planned phase into a local `codex exec` runner.
+
+It is not the default path, because GSD already covers:
+
+- worktrees
+- atomic commits
+- SUMMARY creation
+- STATE updates
+- wave execution

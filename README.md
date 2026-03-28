@@ -25,6 +25,7 @@
 
 - `/gsd:new-project`
 - `/gsd:plan-phase`
+- `/gsd:execute-phase`
 - `/gsd:verify-work`
 - 架构决策
 - 阻塞升级
@@ -157,8 +158,8 @@ bash scripts/start-new-project.sh "MyProject" "Build and ship the project"
 ```text
 /gsd:new-project
 /gsd:plan-phase 1
-/execute-codex-phase 1
-/codex-status
+/gsd:execute-phase 1
+/gsd:progress
 /gsd:verify-work 1
 ```
 
@@ -178,7 +179,102 @@ bash scripts/start-new-project.sh "MyProject" "Build and ship the project"
 bash scripts/execute-codex-phase.sh 1
 ```
 
-这会走 sample phase 的 manifest-first 路径，帮助你看到 checkpoint、日志和 reconcile 的输出结构。
+这会走模板保留的高级 Codex bridge 路径，帮助你看到 checkpoint、日志和 reconcile 的输出结构。注意，这不是默认主流程。
+
+## 极简操作手册
+
+如果你以后每次开新项目都不想重新思考流程，就按这 10 行来：
+
+### 新项目
+
+```bash
+bash scripts/start-new-project.sh "项目名" "一句话目标"
+```
+
+然后在 Claude Code 里：
+
+```text
+/gsd:new-project
+/gsd:plan-phase 1
+/gsd:execute-phase 1
+/gsd:progress
+/gsd:verify-work 1
+```
+
+接着继续下一轮：
+
+```text
+/gsd:plan-phase 2
+/gsd:execute-phase 2
+/gsd:verify-work 2
+```
+
+### 只看进度
+
+```text
+/gsd:progress
+```
+
+### 只做长期监控
+
+```text
+/loop 10m /gsd:progress
+```
+
+### 如果你明确要走本地 Codex bridge
+
+```bash
+CODEX_DRY_RUN=0 \
+CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
+bash scripts/execute-codex-phase.sh 1
+```
+
+这条不是默认主流程，只是高级可选。
+
+## 这个项目目前支持一直跑吗？
+
+支持，但要分情况理解。
+
+### 已经支持的
+
+- 用 `GSD` 做 phase 级持续推进
+- 用 `/loop 10m /gsd:progress` 做长期轮询
+- 用 `watchdog.sh` 做 shell 侧守护
+- 用 `.planning/STATE.md`、`queue/failed/`、`runtime/` 做恢复
+
+### 当前最推荐的“一直跑”方式
+
+默认推荐：
+
+```text
+/gsd:new-project
+/gsd:plan-phase N
+/gsd:execute-phase N
+/gsd:verify-work N
+```
+
+配合：
+
+```text
+/loop 10m /gsd:progress
+```
+
+或者 shell 侧：
+
+```bash
+bash scripts/watchdog.sh 1
+```
+
+### 还没完全到位的
+
+- 高级 `Codex bridge` 路径还不是默认主流程
+- `codex-runner-example.sh` 已经可用，但更适合作为桥接层，不是替代 GSD 原生执行
+- 真正意义上的“完全无人值守 144h”还要靠你的环境稳定性、账号登录态、网络、模型额度一起保证
+
+所以最准确的说法是：
+
+- **作为模板工作流，已经支持长期持续运行**
+- **作为零人工干预的 144h 全自动系统，还属于可用但未完全验证到极限的状态**
 
 ## 以后新开发项目怎么做
 
@@ -202,8 +298,8 @@ bash scripts/start-new-project.sh "你的项目名" "一句话目标"
 
 ```text
 /gsd:plan-phase 1
-/execute-codex-phase 1
-/codex-status
+/gsd:execute-phase 1
+/gsd:progress
 /gsd:verify-work 1
 ```
 
@@ -215,7 +311,7 @@ bash scripts/start-new-project.sh "你的项目名" "一句话目标"
 
 ## 标准工作流
 
-这是一个以 `phase` 为核心的流程，不是旧式的“单 task 串行循环”。
+这是一个以 `phase` 为核心的流程，默认走 GSD 原生执行，而不是自定义执行脚本。
 
 ```text
 /gsd:new-project
@@ -224,14 +320,13 @@ bash scripts/start-new-project.sh "你的项目名" "一句话目标"
 /gsd:plan-phase 1
 → 把 phase 拆成 plan 文件
 
-/execute-codex-phase 1
-→ 读取 phase plan
-→ 分配给 Codex worker
-→ 产出 checkpoint
-→ 跑 wave 级验证
+/gsd:execute-phase 1
+→ GSD 做 wave 分组
+→ GSD 原生 worktree / executor / commit / SUMMARY
+→ 更新 STATE 和 phase 进度
 
-/codex-status
-→ 看当前 phase、worker、失败任务、日志
+/gsd:progress
+→ 看当前 phase、计划进度和下一步
 
 /gsd:verify-work 1
 → 做 phase 级 UAT 验收
@@ -248,7 +343,7 @@ bash scripts/start-new-project.sh "你的项目名" "一句话目标"
 如果只想做监控：
 
 ```text
-/loop 10m /codex-status
+/loop 10m /gsd:progress
 ```
 
 如果你要 shell 侧守护：
@@ -267,7 +362,11 @@ bash scripts/watchdog.sh 1
   - 重复失败写入 `queue/failed/`
   - 只有不再是局部问题时才升级给 Claude
 
-## Codex Runner 接入
+## Codex Runner 接入（高级可选）
+
+默认推荐你使用 `GSD` 原生的 `/gsd:execute-phase`。
+
+下面这层只在你明确要把执行层桥接到 `codex exec` 时再用：
 
 当前执行层已经带了一个可直接调用 `codex exec` 的 starter runner：
 
@@ -315,6 +414,29 @@ bash scripts/execute-codex-phase.sh 1
 
 ```bash
 bash scripts/clean-runtime.sh
+```
+
+## Secondary / Legacy 命令面
+
+下面这些仍然保留在仓库里，但不再是推荐主流程：
+
+- `.claude/commands/generate-with-codex.md`
+- `.claude/skills/generate-with-codex/SKILL.md`
+- `.claude/commands/mutual-review.md`
+- `.claude/skills/mutual-review/SKILL.md`
+
+用途：
+
+- `generate-with-codex`：适合临时小改、非 GSD phase 场景
+- `mutual-review`：适合你明确想做额外双模型复审时
+
+默认项目主流程仍然应该是：
+
+```text
+/gsd:new-project
+/gsd:plan-phase N
+/gsd:execute-phase N
+/gsd:verify-work N
 ```
 
 ## 目录结构

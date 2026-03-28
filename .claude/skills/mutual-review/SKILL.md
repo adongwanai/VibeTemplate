@@ -8,6 +8,8 @@ model: opus
 
 # Mutual Review Skill
 
+> Secondary path. Default phase verification should still run through `gsd:verify-work`.
+
 Cross-model code review for maximum quality through dual verification.
 
 ## When to Use

@@ -5,6 +5,8 @@ model: opus
 
 # Mutual Review Command
 
+> Secondary path. Use when you explicitly want extra cross-model review outside the default GSD verification flow.
+
 Cross-model review loop for higher code quality through dual verification.
 
 ## When to Use

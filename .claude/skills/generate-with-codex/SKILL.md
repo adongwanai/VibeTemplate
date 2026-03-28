@@ -10,6 +10,8 @@ mcpServers:
 
 # Generate with Codex Skill
 
+> Secondary path. Prefer GSD planning + execution for the main project flow.
+
 This skill invokes Codex for code generation via MCP tools.
 
 ## When to Use

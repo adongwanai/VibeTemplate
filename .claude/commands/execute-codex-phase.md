@@ -5,7 +5,13 @@ model: sonnet
 
 # Execute Codex Phase
 
-Run this after the target phase has been planned in `.planning/phases/`.
+Run this only when you intentionally want to bridge a planned phase into the local `codex exec` runner.
+
+This is an advanced path. The default path is:
+
+```text
+/gsd:execute-phase <phase-id>
+```
 
 ## Usage
 
@@ -32,7 +38,7 @@ bash scripts/execute-codex-phase.sh <phase-id>
 
 ## Notes
 
-- Claude stays as the operator and reviewer
-- Codex remains the default implementation engine
+- Prefer `/gsd:execute-phase` unless you explicitly need the local Codex bridge
+- This command does not try to replace GSD's native commit/SUMMARY/state lifecycle
 - If the script reports missing `.planning/STATE.md`, route back to `/gsd:new-project`
 - If it reports missing phase plans, route back to `/gsd:plan-phase <phase-id>`
