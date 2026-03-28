@@ -1,0 +1,31 @@
+# MCP servers - never commit
+.mcp.json.local
+
+# 24h execution
+queue/failed/*.md
+queue/pending-review/*.md
+continue/*.md
+runtime/logs/*
+!runtime/logs/.gitkeep
+runtime/checkpoints/*
+!runtime/checkpoints/.gitkeep
+runtime/workers/*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

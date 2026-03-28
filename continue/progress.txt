@@ -1,0 +1,20 @@
+[2026-03-28 00:00 +08:00] Session: HYBRID-BOOTSTRAP
+Focus: Move the template to a GSD planning + Codex execution architecture.
+
+Work completed:
+- Added runtime, queue, and script scaffolding for the hybrid flow.
+- Changed the default model split so Codex owns execution and Claude stays at planning and verification boundaries.
+- Switched the template toward phase-oriented execution instead of a serial task loop.
+
+Decisions:
+- `.planning/STATE.md` is the formal source of truth.
+- Codex workers run on a non-main branch with isolated worktrees.
+- Repeated task failures go to `queue/failed/` rather than stopping the whole phase by default.
+
+Blockers:
+- None.
+
+Next recommended step:
+- Run `/gsd:new-project`
+- Then `/gsd:plan-phase 1`
+- Then `/execute-codex-phase 1`

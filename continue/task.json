@@ -1,0 +1,16 @@
+{
+  "project": "MyProject",
+  "objective": "Build and ship the project with GSD-managed planning and Codex-managed execution.",
+  "current_phase": "bootstrap",
+  "current_focus": "PLAN-001",
+  "last_updated": "2026-03-28T00:00:00+08:00",
+  "tasks": [
+    {
+      "id": "PLAN-001",
+      "title": "Initialize hybrid runtime and create the first GSD phase",
+      "type": "planning",
+      "status": "planned",
+      "priority": "P0"
+    }
+  ]
+}

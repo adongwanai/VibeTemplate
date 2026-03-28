@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-multi-model-template",
+  "version": "1.0.0",
+  "description": "Hybrid GSD planning + Codex execution template",
+  "scripts": {
+    "test": "node test-template.js",
+    "self-test": "bash scripts/self-test.sh",
+    "typecheck": "echo 'No typecheck configured'",
+    "build": "echo 'No build configured'",
+    "lint": "echo 'No linter configured'"
+  },
+  "devDependencies": {}
+}
