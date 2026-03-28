@@ -28,34 +28,42 @@
 
 ```mermaid
 flowchart TD
-    A[进入 main 导航分支] --> B{你更需要哪种工作流?}
-    B -->|最稳 / 团队 / 正式产品| C[切到 template/gsd-default]
-    B -->|Claude规划 + Codex执行| D[切到 template/claude-codex-default]
-    B -->|实验性无人值守探索| E[切到 template/standalone-readiness]
+    %% Define Styles
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px
+    classDef branch fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px,color:#01579b
+    classDef action fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#1b5e20
+    classDef decision fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#e65100
 
-    C --> F[查看该分支 README]
+    A([🏠 进入 main 导航分支]) --> B{您偏好哪种工作流?}:::decision
+    B -->|最稳固 / 团队 / 首选| C[📌 template/gsd-default]:::branch
+    B -->|高性价比 / Claude+Codex| D[⚡ template/claude-codex-default]:::branch
+    B -->|纯自动化 / 144h 不断更| E[🛸 template/standalone-readiness]:::branch
+
+    C --> F((📖 阅读选定分支的 README))
     D --> F
     E --> F
 
-    F --> G[运行 start-new-project.sh]
-    G --> H{需求清楚吗?}
-    H -->|不清楚| I[superpowers:brainstorming]
-    H -->|清楚| J[/gsd:new-project]
+    F --> G[🚀 运行 start-new-project.sh]:::action
+    G --> H{需求是否清晰?}:::decision
+    H -->|含糊其辞| I[🤔 superpowers:brainstorming]
+    H -->|非常清晰| J(🛠️ /gsd:new-project)
     I --> J
 
-    J --> K[/gsd:plan-phase 1]
-    K --> L{默认执行方式}
-    L -->|gsd-default| M[/gsd:execute-phase 1]
-    L -->|claude-codex-default| N[/execute-codex-phase 1]
-    L -->|standalone-readiness| O[/24h-loop 或 watchdog]
+    J --> K[📋 /gsd:plan-phase 1]:::action
+    K --> L{属于哪条执行链路?}:::decision
+    
+    L -->|gsd-default 路线| M[⚙️ /gsd:execute-phase 1]:::action
+    L -->|claude-codex 路线| N[🦾 /execute-codex-phase 1]:::action
+    L -->|standalone 路线| O[🔁 /24h-loop 或 watchdog]:::action
 
-    M --> P[/gsd:verify-work 1]
+    M --> P[✅ /gsd:verify-work 1]:::action
     N --> P
     O --> P
-    P --> Q{继续下一阶段?}
-    Q -->|是| R[/gsd:plan-phase 2]
-    R --> L
-    Q -->|否| S[review / finish branch / ship]
+    
+    P --> Q{是否有下一阶段?}:::decision
+    Q -->|继续| R[📋 /gsd:plan-phase 2]:::action
+    R -->|循环回原执行链路| L
+    Q -->|结束| S([🚢 分支结项 / Ship it!])
 ```
 
 ---
