@@ -41,6 +41,9 @@ run_check "template smoke test" npm test
 run_check "hooks compile" python3 -m py_compile .claude/hooks/scripts/hooks.py
 
 for path in \
+  AGENTS.md \
+  ARCHITECTURE.md \
+  RELIABILITY.md \
   .planning/PROJECT.md \
   .planning/REQUIREMENTS.md \
   .planning/ROADMAP.md \
@@ -80,6 +83,8 @@ fi
 
 run_check "plansDirectory matches docs/plans" node -e "const fs=require('fs'); const settings=JSON.parse(fs.readFileSync('.claude/settings.json', 'utf8')); process.exit(settings.plansDirectory === './docs/plans' ? 0 : 1)"
 run_check "GSD config defaults to yolo + auto_advance + parallelization" node -e "const fs=require('fs'); const cfg=JSON.parse(fs.readFileSync('.planning/config.json','utf8')); const ok=cfg.mode==='yolo' && cfg.parallelization===true && cfg.workflow && cfg.workflow.auto_advance===true; process.exit(ok?0:1)"
+run_check "README advertises branch navigation" node -e "const fs=require('fs'); const readme=fs.readFileSync('README.md','utf8'); const ok=readme.includes('template/gsd-default') && readme.includes('template/claude-codex-default') && readme.includes('GSD + superpowers'); process.exit(ok?0:1)"
+run_check "AGENTS doc stays lightweight and points to core docs" node -e "const fs=require('fs'); const txt=fs.readFileSync('AGENTS.md','utf8'); const lines=txt.split(/\\n/).length; const ok=lines <= 40 && txt.includes('README.md') && txt.includes('CLAUDE.md') && txt.includes('ARCHITECTURE.md') && txt.includes('RELIABILITY.md'); process.exit(ok?0:1)"
 
 if [ "$FAILURES" -eq 0 ]; then
   printf 'Hybrid template self-test passed.\n'

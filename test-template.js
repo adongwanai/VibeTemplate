@@ -8,6 +8,9 @@ const fs = require('fs');
 const path = require('path');
 
 const REQUIRED_FILES = [
+  'AGENTS.md',
+  'ARCHITECTURE.md',
+  'RELIABILITY.md',
   'CLAUDE.md',
   '.claude/settings.json',
   '.claude/rules/coding-style.md',
@@ -132,6 +135,22 @@ try {
   }
 } catch (e) {
   console.log(`❌ Unable to validate .planning/config.json: ${e.message}`);
+  allPassed = false;
+}
+
+const readme = fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8');
+if (readme.includes('template/gsd-default') && readme.includes('template/claude-codex-default') && readme.includes('GSD + superpowers')) {
+  console.log('✅ README includes branch navigation and workflow guidance');
+} else {
+  console.log('❌ README is missing branch navigation or workflow guidance');
+  allPassed = false;
+}
+
+const agents = fs.readFileSync(path.join(__dirname, 'AGENTS.md'), 'utf8');
+if (agents.includes('README.md') && agents.includes('CLAUDE.md') && agents.includes('ARCHITECTURE.md') && agents.includes('RELIABILITY.md')) {
+  console.log('✅ AGENTS.md points to the core docs');
+} else {
+  console.log('❌ AGENTS.md is missing core doc references');
   allPassed = false;
 }
 
