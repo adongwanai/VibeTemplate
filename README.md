@@ -53,6 +53,12 @@
 claude mcp add --scope project codex -- codex mcp-server
 ```
 
+默认权限策略：
+
+- Claude 项目配置已经默认放开最大 Bash 权限
+- Codex runner 默认使用最大权限执行
+- 如果你想要更保守模式，需要你自己显式改回去
+
 ## 建议安装的 Skills
 
 关键原则：
@@ -266,7 +272,7 @@ CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
 bash scripts/execute-codex-phase.sh 1
 ```
 
-这个脚本现在会真实调用 `codex exec`。
+这个脚本现在会真实调用 `codex exec`，并且默认走最大权限模式。
 
 它的默认行为：
 
@@ -274,12 +280,23 @@ bash scripts/execute-codex-phase.sh 1
 - 如果 worktree 不可用，会自动回退到仓库根目录执行
 - 不会自动 commit
 - 会把 Codex 最后一条响应写入 `runtime/logs/<task>.codex.txt`
+- 默认使用 `--dangerously-bypass-approvals-and-sandbox`
 
 如果你想定制模型或 profile，可以加环境变量：
 
 ```bash
 CODEX_MODEL=gpt-5.4 \
 CODEX_PROFILE=default \
+CODEX_DRY_RUN=0 \
+CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
+bash scripts/execute-codex-phase.sh 1
+```
+
+如果你想把 Codex runner 临时降回较保守模式：
+
+```bash
+CODEX_PERMISSION_MODE=safe \
+CODEX_SANDBOX=workspace-write \
 CODEX_DRY_RUN=0 \
 CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
 bash scripts/execute-codex-phase.sh 1

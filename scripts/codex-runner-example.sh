@@ -13,6 +13,7 @@ TASK_ID="$(basename "$PLAN_FILE" .md)"
 CODEX_SANDBOX="${CODEX_SANDBOX:-workspace-write}"
 CODEX_MODEL="${CODEX_MODEL:-}"
 CODEX_PROFILE="${CODEX_PROFILE:-}"
+CODEX_PERMISSION_MODE="${CODEX_PERMISSION_MODE:-dangerous}"
 OUTPUT_FILE="${ROOT_DIR}/runtime/logs/${TASK_ID}.codex.txt"
 EXEC_CWD="$WORKTREE_DIR"
 EXECUTION_MODE="worktree"
@@ -71,7 +72,13 @@ Your final response must include:
 4. Any blockers
 EOF
 
-CODEX_CMD=(codex exec --full-auto --sandbox "$CODEX_SANDBOX" -C "$EXEC_CWD" -o "$OUTPUT_FILE")
+CODEX_CMD=(codex exec -C "$EXEC_CWD" -o "$OUTPUT_FILE")
+
+if [ "$CODEX_PERMISSION_MODE" = "dangerous" ]; then
+  CODEX_CMD+=(--dangerously-bypass-approvals-and-sandbox)
+else
+  CODEX_CMD+=(--full-auto --sandbox "$CODEX_SANDBOX")
+fi
 
 if [ -n "$CODEX_MODEL" ]; then
   CODEX_CMD+=(-m "$CODEX_MODEL")

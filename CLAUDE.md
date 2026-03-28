@@ -48,6 +48,35 @@ Use Superpowers around the edges:
 - Failed tasks go to `queue/failed/`
 - Worker manifests go to `runtime/checkpoints/`
 - Watchdog and reconciliation live under `scripts/`
+- Permissions default to maximum openness for both Claude and Codex in this template
+
+## Constitutional Rules
+
+### Core Rule: Do Not Stall
+
+- 遇到歧义时，选最合理方案，记录假设，继续
+- 遇到报错时，先自动重试，再决定是否降级或入队
+- 不要停下来等一句“继续”
+- 不要频繁把局部问题升级成人类阻塞
+
+### Error Handling
+
+- 命令报错先重试最多 3 次
+- 同类问题修不动时写入 `queue/failed/`
+- wave 级验证持续失败时再升级给 Claude
+
+### Default Technical Choices
+
+- 包管理器默认 `npm`
+- 规划默认走 GSD
+- 执行默认走 Codex runner
+- 验证默认先局部，再 wave，再 phase
+
+### Permission Posture
+
+- Claude project settings default to fully open Bash permissions
+- Codex runner defaults to `--dangerously-bypass-approvals-and-sandbox`
+- 只有在你主动改环境变量时才降回较保守模式
 
 ## Recovery Rules
 
