@@ -41,6 +41,9 @@ run_check "template smoke test" npm test
 run_check "hooks compile" python3 -m py_compile .claude/hooks/scripts/hooks.py
 
 for path in \
+  AGENTS.md \
+  ARCHITECTURE.md \
+  RELIABILITY.md \
   .planning/PROJECT.md \
   .planning/REQUIREMENTS.md \
   .planning/ROADMAP.md \
@@ -80,6 +83,8 @@ fi
 
 run_check "plansDirectory matches docs/plans" node -e "const fs=require('fs'); const settings=JSON.parse(fs.readFileSync('.claude/settings.json', 'utf8')); process.exit(settings.plansDirectory === './docs/plans' ? 0 : 1)"
 run_check "GSD config defaults to yolo + auto_advance + parallelization" node -e "const fs=require('fs'); const cfg=JSON.parse(fs.readFileSync('.planning/config.json','utf8')); const ok=cfg.mode==='yolo' && cfg.parallelization===true && cfg.workflow && cfg.workflow.auto_advance===true; process.exit(ok?0:1)"
+run_check "README documents Claude to Codex default flow" node -e "const fs=require('fs'); const txt=fs.readFileSync('README.md','utf8'); const ok=txt.includes('/execute-codex-phase') && txt.includes('/codex-status'); process.exit(ok?0:1)"
+run_check "AGENTS.md points to Claude to Codex flow" node -e "const fs=require('fs'); const txt=fs.readFileSync('AGENTS.md','utf8'); const ok=txt.includes('/execute-codex-phase') && txt.includes('cost-sensitive solo work'); process.exit(ok?0:1)"
 
 if [ "$FAILURES" -eq 0 ]; then
   printf 'Hybrid template self-test passed.\n'

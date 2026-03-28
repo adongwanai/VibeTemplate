@@ -8,6 +8,9 @@ const fs = require('fs');
 const path = require('path');
 
 const REQUIRED_FILES = [
+  'AGENTS.md',
+  'ARCHITECTURE.md',
+  'RELIABILITY.md',
   'CLAUDE.md',
   '.claude/settings.json',
   '.claude/rules/coding-style.md',
@@ -132,6 +135,22 @@ try {
   }
 } catch (e) {
   console.log(`❌ Unable to validate .planning/config.json: ${e.message}`);
+  allPassed = false;
+}
+
+const readme = fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8');
+if (readme.includes('/execute-codex-phase') && readme.includes('/codex-status')) {
+  console.log('✅ README includes Claude-to-Codex execution guidance');
+} else {
+  console.log('❌ README is missing Claude-to-Codex execution guidance');
+  allPassed = false;
+}
+
+const agents = fs.readFileSync(path.join(__dirname, 'AGENTS.md'), 'utf8');
+if (agents.includes('/execute-codex-phase') && agents.includes('cost-sensitive solo work')) {
+  console.log('✅ AGENTS.md matches the Claude-to-Codex branch');
+} else {
+  console.log('❌ AGENTS.md does not match the Claude-to-Codex branch flow');
   allPassed = false;
 }
 
