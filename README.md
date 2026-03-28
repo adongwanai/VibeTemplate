@@ -53,6 +53,68 @@
 claude mcp add --scope project codex -- codex mcp-server
 ```
 
+## 建议安装的 Skills
+
+关键原则：
+
+- `Claude Code` 和 `Codex` 两边都要装核心 skills
+- 不要只给 Claude 装，Codex 不装
+- 尤其是规划、前端设计、浏览器自动化这类能力，最好两边环境都准备好
+
+### 1. GSD 工作流
+
+建议先把 GSD 装到本机：
+
+```bash
+npx get-shit-done-cc@latest --claude --codex --global
+```
+
+这个模板默认就是围绕 GSD 的 `.planning/`、phase、verify-work 来组织的。
+
+### 2. Superpowers
+
+如果你走这个模板的推荐流，`superpowers` 基本属于必装。
+
+Claude Code：
+
+```bash
+claude plugins install superpowers
+```
+
+如果你更喜欢显式安装，也可以按 skill 装：
+
+```bash
+claude skill add superpowers:brainstorming
+claude skill add superpowers:writing-plans
+claude skill add superpowers:executing-plans
+claude skill add superpowers:finishing-a-development-branch
+```
+
+Codex：
+
+```bash
+codex skill add superpowers:brainstorming
+codex skill add superpowers:writing-plans
+codex skill add superpowers:executing-plans
+codex skill add superpowers:finishing-a-development-branch
+```
+
+### 3. 前端设计 / 审美增强 / 浏览器自动化
+
+如果你做的是前端项目，建议至少准备下面这几类能力。
+
+| Skill | 用途 | 安装命令 | 来源 |
+|------|------|----------|------|
+| Browser / Playwright 浏览器自动化 | 打开网页、点击、填表、截图、做网页 smoke test | 建议安装一个你常用的 browser automation / Playwright skill，并在 Claude Code 与 Codex 两边都装上 | 依所选 skill 而定 |
+| `frontend-design` | 创建独特、高设计品质的前端界面，避免 AI 味太重 | `npx skills add vercel-labs/agent-skills --skill frontend-design` | Vercel / Anthropic |
+| UI/UX Pro Max | 提升 AI 审美，补充更强的 UI 风格、配色、字体参考 | `npx skills add nextlevelbuilder/ui-ux-pro-max-skill` | nextlevelbuilder |
+
+说明：
+
+- 上面这类第三方 skills，建议 `Claude Code` 和 `Codex` 两边都装
+- 如果你的环境里已经有 `agent-browser`、Playwright skill 或其他浏览器自动化 skill，也建议两边保持一致
+- 这个模板本身不强绑定某一个前端 skill，但强烈建议你把设计和浏览器自动化能力预先装好
+
 ## 快速开始
 
 ### 1. 初始化模板目录
@@ -61,6 +123,19 @@ claude mcp add --scope project codex -- codex mcp-server
 bash scripts/bootstrap-gsd.sh
 bash init-continue.sh "MyProject" "Build and ship the project"
 ```
+
+如果你是把这个仓库当模板复制出来做一个真实新项目，推荐直接用：
+
+```bash
+bash scripts/start-new-project.sh "MyProject" "Build and ship the project"
+```
+
+这个脚本会：
+
+- 归档模板自带的 sample `.planning`
+- 清空 sample runtime 状态
+- 重新生成适合真实项目的初始目录
+- 然后让你可以安全地跑 `/gsd:new-project`
 
 ### 2. 在 Claude Code 中开始
 
@@ -71,6 +146,57 @@ bash init-continue.sh "MyProject" "Build and ship the project"
 /codex-status
 /gsd:verify-work 1
 ```
+
+### 3. 用内置 sample state 试跑
+
+仓库已经自带最小可演示的 `.planning` 状态：
+
+- [PROJECT.md](/Users/mac/Desktop/2026-money/opc/my-template/.planning/PROJECT.md)
+- [REQUIREMENTS.md](/Users/mac/Desktop/2026-money/opc/my-template/.planning/REQUIREMENTS.md)
+- [ROADMAP.md](/Users/mac/Desktop/2026-money/opc/my-template/.planning/ROADMAP.md)
+- [STATE.md](/Users/mac/Desktop/2026-money/opc/my-template/.planning/STATE.md)
+- [01-template-smoke](/Users/mac/Desktop/2026-money/opc/my-template/.planning/phases/01-template-smoke)
+
+如果你只是想验证模板 wiring，不想先自己规划 phase，可以直接在非 `main` 分支运行：
+
+```bash
+bash scripts/execute-codex-phase.sh 1
+```
+
+这会走 sample phase 的 manifest-first 路径，帮助你看到 checkpoint、日志和 reconcile 的输出结构。
+
+## 以后新开发项目怎么做
+
+推荐你每次都按这个顺序：
+
+1. 复制这个模板仓库
+2. 进入新仓库后运行：
+
+```bash
+bash scripts/start-new-project.sh "你的项目名" "一句话目标"
+```
+
+3. 在 Claude Code 里执行：
+
+```text
+/gsd:new-project
+```
+
+4. 让 GSD 生成真实项目的 `PROJECT.md / ROADMAP.md / STATE.md`
+5. 接着执行：
+
+```text
+/gsd:plan-phase 1
+/execute-codex-phase 1
+/codex-status
+/gsd:verify-work 1
+```
+
+简化理解就是：
+
+- 模板仓库自带 sample state 只用于演示
+- 真实项目一开始就先跑 `start-new-project.sh`
+- 然后用 `/gsd:new-project` 生成你自己的正式状态
 
 ## 标准工作流
 
@@ -126,6 +252,28 @@ bash scripts/watchdog.sh 1
   - 重复失败写入 `queue/failed/`
   - 只有不再是局部问题时才升级给 Claude
 
+## Codex Runner 接入
+
+当前执行层仍然是 `manifest-first`，但模板里已经补了一个 runner 示例：
+
+- [codex-runner-example.sh](/Users/mac/Desktop/2026-money/opc/my-template/scripts/codex-runner-example.sh)
+
+如果你想让执行器真正自动调 Codex，可以这样试：
+
+```bash
+CODEX_DRY_RUN=0 \
+CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
+bash scripts/execute-codex-phase.sh 1
+```
+
+默认这个示例脚本只打印参数，不会真的调用 Codex。你后续只要把它替换成自己习惯的 `codex exec` 命令就行。
+
+如果 sample run 之后想把运行时产物清掉：
+
+```bash
+bash scripts/clean-runtime.sh
+```
+
 ## 目录结构
 
 ```text
@@ -160,8 +308,8 @@ bash scripts/self-test.sh
 
 这个模板现在已经能作为“可上手的模板项目”使用，但要注意一件事：
 
-- 它不是“零上下文一键即跑”
-- 第一次真正进入执行前，你必须先跑 `/gsd:new-project`
+- 它现在已经带了一个最小 sample `.planning` 状态，可用于演示
+- 但第一次用于真实项目时，你仍然应该跑 `/gsd:new-project` 来生成属于你项目自己的状态
 
 也就是说，当前状态已经适合：
 
@@ -172,7 +320,7 @@ bash scripts/self-test.sh
 但当前状态还不等于：
 
 - 已经存在一个真实业务项目的 `.planning/STATE.md`
-- 已经有可直接执行的 phase plan
+- 已经接入真实 Codex runner 并完成全自动执行
 
 ## 说明
 

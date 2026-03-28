@@ -45,7 +45,6 @@ For a workflow template, current coverage is good enough to catch:
 The following are not yet tested:
 
 - real GSD initialization flow
-- actual `.planning/STATE.md` creation through a live command
 - real worker worktree creation against an initialized phase
 - actual Codex execution through a runner
 - end-to-end example project bootstrap

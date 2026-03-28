@@ -6,11 +6,11 @@ The repository is close to being a ready-to-use workflow template, but it is not
 
 ## Main Concerns
 
-### 1. No Real `.planning/STATE.md` Yet
+### 1. Sample State Is Demonstration State
 
-The runtime correctly refuses to execute without `.planning/STATE.md`.
+The repository now includes a real sample `.planning/STATE.md` and a sample phase.
 
-That is good for safety, but it also means the current repo is a template shell until the operator runs:
+That improves onboarding, but it is still demonstration state. For a real project, the operator should still replace it by running:
 
 - `/gsd:new-project`
 
@@ -23,6 +23,10 @@ That means:
 - the execution architecture is in place
 - the fully automated worker bridge is not yet implemented
 
+There is now a documented starter hook:
+
+- `scripts/codex-runner-example.sh`
+
 ### 3. Placeholder Build Tooling
 
 `package.json` still uses placeholder scripts for:
@@ -33,9 +37,9 @@ That means:
 
 This is acceptable for a template repository, but it means green checks do not represent real application compilation or linting.
 
-### 4. No Example Phase
+### 4. Example Phase Is Structural, Not Productive
 
-There is no sample `.planning/phases/01-*/` directory showing a live runnable phase. That makes onboarding slightly less concrete.
+The sample phase under `.planning/phases/01-template-smoke/` proves the structure and runtime path, but it is not a business feature and it does not prove full autonomous coding.
 
 ### 5. Partial Legacy Surface Remains
 
@@ -57,7 +61,6 @@ They do not block usage, but they may confuse a new operator unless clearly docu
 
 ## Recommended Next Hardening Steps
 
-1. Add a sample initialized phase under `.planning/phases/`.
-2. Add a documented `CODEX_RUNNER_SCRIPT` example.
-3. Decide whether to keep or trim the legacy generate/review commands.
-4. Add one end-to-end example proving the operator flow from bootstrap to verification.
+1. Add a documented `CODEX_RUNNER_SCRIPT` example.
+2. Decide whether to keep or trim the legacy generate/review commands.
+3. Add one end-to-end example proving the operator flow from bootstrap to verification on a toy app.

@@ -29,6 +29,10 @@ Key paths:
 
 Currently contains:
 
+- `.planning/PROJECT.md`
+- `.planning/REQUIREMENTS.md`
+- `.planning/ROADMAP.md`
+- `.planning/STATE.md`
 - `.planning/codebase/STACK.md`
 - `.planning/codebase/INTEGRATIONS.md`
 - `.planning/codebase/ARCHITECTURE.md`
@@ -36,8 +40,12 @@ Currently contains:
 - `.planning/codebase/CONVENTIONS.md`
 - `.planning/codebase/TESTING.md`
 - `.planning/codebase/CONCERNS.md`
+- `.planning/phases/01-template-smoke/01-CONTEXT.md`
+- `.planning/phases/01-template-smoke/01-01-validate-sample-state.md`
+- `.planning/phases/01-template-smoke/01-02-runtime-smoke.md`
+- `.planning/phases/01-template-smoke/01-UAT.md`
 
-The repository does not yet contain a real `.planning/STATE.md`, so it is not yet an initialized project instance.
+The repository now contains a sample initialized state and sample phase for demonstration purposes.
 
 ### `scripts/`
 
@@ -66,4 +74,4 @@ Reserved runtime paths:
 
 ## Practical Readability
 
-The repository is organized well enough for a new operator to navigate quickly. The main missing structure is a concrete example phase under `.planning/phases/`.
+The repository is organized well enough for a new operator to navigate quickly, and it now includes a concrete example phase under `.planning/phases/`.

@@ -84,7 +84,7 @@ build_ready_queue() {
     find "$PHASE_DIR" -maxdepth 1 -type f -name '*.md' \
       ! -name '*CONTEXT.md' \
       ! -name '*UAT.md' \
-      ! -name 'SUMMARY.md' \
+      ! -name '*SUMMARY.md' \
       | sort
   )
 
@@ -164,7 +164,7 @@ dispatch_task() {
 
   if [ -n "$runner_script" ] && [ "$DRY_RUN" = "0" ]; then
     log "Dispatching $(basename "$plan_file") to worker ${worker_id} via ${runner_script}"
-    if "$runner_script" "$PHASE_ID" "$plan_file" "runtime/workers/worker-${worker_id}"; then
+    if bash "$runner_script" "$PHASE_ID" "$plan_file" "runtime/workers/worker-${worker_id}"; then
       write_checkpoint "$worker_id" "$plan_file" "dispatched"
     else
       package_failure "$worker_id" "$plan_file" "External runner failed."

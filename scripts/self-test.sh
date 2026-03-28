@@ -41,11 +41,22 @@ run_check "template smoke test" npm test
 run_check "hooks compile" python3 -m py_compile .claude/hooks/scripts/hooks.py
 
 for path in \
+  .planning/PROJECT.md \
+  .planning/REQUIREMENTS.md \
+  .planning/ROADMAP.md \
+  .planning/STATE.md \
+  .planning/phases/01-template-smoke/01-CONTEXT.md \
+  .planning/phases/01-template-smoke/01-01-validate-sample-state.md \
+  .planning/phases/01-template-smoke/01-02-runtime-smoke.md \
+  .planning/phases/01-template-smoke/01-UAT.md \
   .claude/commands/execute-codex-phase.md \
   .claude/commands/codex-status.md \
   .claude/skills/recover-failed-wave/SKILL.md \
   .claude/skills/self-test-template/SKILL.md \
   scripts/bootstrap-gsd.sh \
+  scripts/start-new-project.sh \
+  scripts/clean-runtime.sh \
+  scripts/codex-runner-example.sh \
   scripts/execute-codex-phase.sh \
   scripts/reconcile-wave.sh \
   scripts/watchdog.sh \
