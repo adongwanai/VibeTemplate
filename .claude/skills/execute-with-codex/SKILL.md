@@ -5,17 +5,11 @@ description: Execute a planned GSD phase through the Codex-first runtime. Use wh
 
 # Execute With Codex
 
-This skill runs the optional Codex bridge layer, not the default project execution path.
+This skill runs the default Codex bridge layer on this branch.
 
 ## Goal
 
-Provide an optional way to hand planned phase work to a local `codex exec` runner.
-
-Default project execution should still use:
-
-```text
-/gsd:execute-phase <phase-id>
-```
+Hand planned phase work to a local `codex exec` runner while keeping GSD responsible for project planning and verification.
 
 ## Preconditions
 
@@ -24,7 +18,7 @@ Default project execution should still use:
 - Current branch is not `main`
 - Runtime scaffold exists under `scripts/`, `queue/`, and `runtime/`
 
-## Bridge Execution Model
+## Default Execution Model
 
 - Up to 4 Codex worker slots
 - Phase-aware execution
@@ -56,10 +50,9 @@ find queue/failed -maxdepth 1 -type f | sort
 /gsd:verify-work <phase-id>
 ```
 
-## When Not To Use
+## Backup Path
 
-- Do not use this as the default replacement for GSD execute-phase
-- Do not use this when you need native GSD commits, SUMMARY generation, and phase transition handling
+Use `/gsd:execute-phase` instead when you explicitly want GSD-native commits, SUMMARY generation, and phase transition handling.
 
 ## Worker Policy
 

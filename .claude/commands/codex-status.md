@@ -5,13 +5,9 @@ model: sonnet
 
 # Codex Status
 
-Use this command to inspect the optional Codex bridge runtime.
+Use this command to inspect the default Codex bridge runtime on this branch.
 
-For the main project flow, prefer:
-
-```text
-/gsd:progress
-```
+Use `/gsd:progress` when you want GSD's project-level view. Use `/codex-status` when you want bridge-level runtime details.
 
 ## Read
 
