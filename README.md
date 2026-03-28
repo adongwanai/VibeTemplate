@@ -1,12 +1,12 @@
-# 🔮 VibeTemplate: 多模态 Agent 工作流仓库
+# 🔮 VibeTemplate: 144h Workflow 模板导航仓
 
 ![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 ![GSD](https://img.shields.io/badge/Workflow-GSD-orange?style=flat-square)
 
 > **🚀 欢迎来到 VibeTemplate**  
-> 这个仓库不是一个单一的项目模板，而是一个**多模板导航仓库**。  
-> `main` 分支的唯一职责，就是**帮助你挑选并进入最适合你的开发模式分支**。真正带有项目结构和代码的开发模板在对应的子分支中。
+> 这个仓库不是一个单一的项目模板，而是一个针对 **144h Workflow 自动化** 打造的**多模板导航仓库**。  
+> `main` 分支的唯一职责，就是**帮助你挑选并进入最适合你的 144h 开发路线分支**。真正带有项目结构和代码的开发模板在对应的子分支中。
 
 ---
 
@@ -28,36 +28,36 @@
 
 ```mermaid
 flowchart TD
-    A["进入 main 导航分支"] --> B{"偏好哪种工作流?"}
-    B -->|"最稳 / 团队 / 首选"| C["template/gsd-default"]
-    B -->|"Claude + Codex"| D["template/claude-codex-default"]
-    B -->|"纯自动化探索"| E["template/standalone-readiness"]
+    A(["🏠 进入 main 导航分支"]) --> B{"🎯 您偏好哪种 144h 路线?"}
+    B -->|"🛡️ 最稳固 / 团队首选"| C["📌 template/gsd-default"]
+    B -->|"🦾 高并发 / Claude+Codex"| D["⚡ template/claude-codex-default"]
+    B -->|"🛸 纯脱手 / 实验性探索"| E["🧪 template/standalone-readiness"]
 
-    C --> F["阅读选定分支 README"]
+    C --> F(("📖 阅读选中分支的 README"))
     D --> F
     E --> F
 
-    F --> G["运行 start-new-project.sh"]
-    G --> H{"需求是否清晰?"}
-    H -->|"还不清楚"| I["superpowers:brainstorming"]
-    H -->|"已经清楚"| J["/gsd:new-project"]
+    F --> G["🚀 运行 start-new-project.sh"]
+    G --> H{"🤔 需求细节清晰吗?"}
+    H -->|"模糊"| I["💬 进行 superpowers:brainstorming"]
+    H -->|"十分清晰"| J("⚙️ 确立骨架 /gsd:new-project")
     I --> J
 
-    J --> K["/gsd:plan-phase 1"]
-    K --> L{"执行链路?"}
+    J --> K["📋 第一阶段 /gsd:plan-phase 1"]
+    K --> L{"⚡ 所属分支的执行链路"}
     
-    L -->|"gsd-default"| M["/gsd:execute-phase 1"]
-    L -->|"claude-codex-default"| N["/execute-codex-phase 1"]
-    L -->|"standalone-readiness"| O["/24h-loop 或 watchdog"]
+    L -->|"gsd-default"| M["⚙️ 落地 /gsd:execute-phase 1"]
+    L -->|"claude-codex-default"| N["🦾 落地 /execute-codex-phase 1"]
+    L -->|"standalone-readiness"| O["🔁 长挂机 /24h-loop 或 watchdog"]
 
-    M --> P["/gsd:verify-work 1"]
+    M --> P["✅ 质量验收 /gsd:verify-work 1"]
     N --> P
     O --> P
     
-    P --> Q{"是否有下一阶段?"}
-    Q -->|"继续"| R["/gsd:plan-phase 2"]
-    R -->|"继续执行循环"| L
-    Q -->|"结束"| S["收尾 / review / ship"]
+    P --> Q{"🎯 是否还有下一阶段?"}
+    Q -->|"继续推进"| R["📋 规划 /gsd:plan-phase 2"]
+    R -->|"进入下一轮执行循环"| L
+    Q -->|"全部完结"| S(["🚢 完美收尾 (review / ship)"])
 ```
 
 ---
