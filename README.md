@@ -1,263 +1,294 @@
-# VibeTemplate
+# 🔮 VibeTemplate: 多模态 Agent 工作流仓库
 
-这个仓库不是单一模板，而是一个**双模板导航仓库**。
+![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![GSD](https://img.shields.io/badge/Workflow-GSD-orange?style=flat-square)
 
-`main` 分支只负责一件事：
+> **🚀 欢迎来到 VibeTemplate**  
+> 这个仓库不是一个单一的项目模板，而是一个**多模板导航仓库**。  
+> `main` 分支的唯一职责，就是**帮助你挑选并进入最适合你的开发模式分支**。真正带有项目结构和代码的开发模板在对应的子分支中。
 
-- 告诉你该选哪条模板分支
+---
 
-真正用于项目启动的模板在下面两条分支里。
+## 🧭 选哪条模板分支？(核心选型矩阵)
 
-## 选哪条分支
+根据你对稳定性、人工介入程度和模型执行器的偏好，选择下方最适合您的分支结构：
 
-### 1. `template/gsd-default`
+| 分支名 (`git switch ...`) | 核心理念 | 推荐适用场景 | 特点 & 权衡 |
+| :--- | :--- | :--- | :--- |
+| **`template/gsd-default`**<br>*(推荐起点)* | **最稳定、完全原生的 GSD 体验** | - 正式产品项目<br>- 长期稳定维护<br>- 初次接触 GSD | **最稳妥。** 复用 GSD 所有原生能力，执行链路统一 (phase -> commit -> UAT)，无需维护第三方执行脚本。 |
+| **`template/claude-codex-default`** | **高级桥接：Claude 规划 + Codex 落地** | - 个人极客项目<br>- 在意用量成本<br>- 快速原型的 Agent 项目 | **高阶极客选型。** 让昂贵的 Claude 仅做高价值决策，将干活下放给 Codex，依靠 Codex Runner 作为默认执行层。 |
+| **`template/standalone-readiness`** | **独立部署：144h 无人值守试验田** | - 全自动化尝试<br>- 本地大模型独立系统开发 | **最前沿探索。** 构建面向完全无人干预、极致独立的自动化架构体系。|
 
-适合：
+---
 
-- 你更看重稳定
-- 你想尽量复用 GSD 原生能力
-- 你不想维护自定义执行桥
-- 你希望 phase / commit / SUMMARY / STATE / verify 都走同一套原生链路
+## 🚀 极简操作：一键切入与启动
 
-默认主流程：
+不知道选哪个？**默认选 `template/gsd-default` 绝对不会出错。**
+
+### 1️⃣ 切到对应分支
+```bash
+# GSD 默认流 (最稳定推荐)
+git switch template/gsd-default
+
+# Claude → Codex 高阶默认流
+git switch template/claude-codex-default
+
+# Standalone 独立模式流
+git switch template/standalone-readiness
+```
+
+### 2️⃣ 启动你的新项目
+进入你选定的分支后，请**直接查看该分支专有的 `README.md`**，里面包含了详细完整的项目初始化与执行指南。
+
+每个分支都已自带：
+- 📖 新项目零距离启动流程
+- 🧩 强烈建议安装的 AI 技能 (Skills)
+- ⚙️ 工作流命令一览表
+
+---
+
+## 🧠 一句话记忆法 (以 GSD 主干为例)
+
+即使是最复杂的架构，我们也都收敛到了以下 5 行命令：
+
+```text
+/gsd:new-project        # 正式立项与生成状态大脑
+/gsd:plan-phase N       # 拆解复杂的当前 Phase
+/gsd:execute-phase N    # 将 Phase 计划无情落地
+/gsd:verify-work N      # 严格验证交付形态
+/gsd:progress           # 迷茫时看一眼进度
+```
+
+💭 **前期模糊时？**
+在正式立项前，你可以依靠 `superpowers:brainstorming` 先理清需求脉络。
+
+---
+
+## 🧩 GSD + superpowers 最佳实践
+
+很多人第一次接触这两套东西时，会以为它们在做同一件事。
+
+其实最稳的用法不是二选一，而是分层：
+
+### GSD 负责主干
+
+负责这些事情：
+
+- 项目立项
+- `.planning/` 状态管理
+- phase 拆分
+- phase 执行
+- 进度查看
+- UAT 验收
+
+也就是：
 
 ```text
 /gsd:new-project
 /gsd:plan-phase N
 /gsd:execute-phase N
 /gsd:verify-work N
-```
-
-推荐给：
-
-- 正式产品项目
-- 团队协作项目
-- 长期维护项目
-- 第一次使用这套模板的人
-
-### 2. `template/claude-codex-default`
-
-适合：
-
-- 你明确想走 `Claude → Codex`
-- 你想让 `Codex` 成为默认执行面
-- 你更看重模型成本和执行效率
-- 你愿意接受有一层自定义 bridge
-
-默认主流程：
-
-```text
-/gsd:new-project
-/gsd:plan-phase N
-/execute-codex-phase N
-/gsd:verify-work N
-```
-
-推荐给：
-
-- 个人项目
-- Agent / 自动化类项目
-- 快速迭代项目
-- 明确想把 `Codex` 当主执行器的人
-
-## 最简单的选择规则
-
-- 不确定选哪个：`template/gsd-default`
-- 明确要 `Claude 规划 + Codex 干活`：`template/claude-codex-default`
-
-## 怎么切到对应分支
-
-### GSD 默认流
-
-```bash
-git switch template/gsd-default
-```
-
-### Claude → Codex 默认流
-
-```bash
-git switch template/claude-codex-default
-```
-
-## 推到本地后怎么开始
-
-进入你选定的分支之后，看该分支自己的 `README.md`。
-
-每条分支上都已经有：
-
-- 上手指南
-- skills 安装建议
-- 新项目启动流程
-- 长时间运行说明
-
-## 推荐主流程
-
-如果你不想在两套流里反复纠结，推荐先从 `template/gsd-default` 开始。
-
-这条是当前最稳、最标准、最容易长期维护的主流程。
-
-### 阶段 0：新项目起步
-
-先切到：
-
-```bash
-git switch template/gsd-default
-```
-
-然后在新项目目录执行：
-
-```bash
-bash scripts/start-new-project.sh "项目名" "一句话目标"
-```
-
-再进入 Claude Code。
-
-### 阶段 1：把模糊想法说清楚
-
-如果你的需求还很模糊，比如：
-
-> 我想做一个桌面 Agent APP
-
-先用 `superpowers` 做前置澄清：
-
-- `superpowers:brainstorming`
-
-如果是 UI 很重的项目，再补：
-
-- `frontend-design`
-- 你装的 UI/UX skills
-- 浏览器自动化相关 skill
-
-这一层的目标不是写代码，而是把需求讲明白。
-
-### 阶段 2：把项目正式立起来
-
-需求清楚后，用 GSD 进入正式项目流：
-
-```text
-/gsd:new-project
-```
-
-这一步会生成：
-
-- `.planning/PROJECT.md`
-- `.planning/REQUIREMENTS.md`
-- `.planning/ROADMAP.md`
-- `.planning/STATE.md`
-
-这几个文件以后就是项目大脑。
-
-### 阶段 3：拆 phase
-
-然后：
-
-```text
-/gsd:plan-phase 1
-```
-
-如果 phase 比较复杂，前面已经用过的 `superpowers:writing-plans` 可以继续辅助思考，但主输出还是让 GSD 管 phase。
-
-### 阶段 4：执行
-
-默认执行用：
-
-```text
-/gsd:execute-phase 1
-```
-
-这是主流程，不是 `/execute-codex-phase`。
-
-因为这条路线已经固定成：
-
-- `GSD` 负责主执行骨架
-- `superpowers` 负责前置思考和质量增强
-- `Codex runner` 是高级可选桥接，不是默认入口
-
-### 阶段 5：看进度
-
-中途想看状态：
-
-```text
 /gsd:progress
 ```
 
-如果你真在用高级 Codex bridge，才看：
+### superpowers 负责增强
 
-```text
-/codex-status
-```
+负责这些事情：
 
-### 阶段 6：验收
+- 需求模糊时的前置澄清
+- 方案设计和实现计划细化
+- 更严格的质量门
+- 分支收尾
 
-phase 执行完后：
+也就是：
 
-```text
-/gsd:verify-work 1
-```
-
-这是默认验收入口。
-
-如果你还想加一层更严格质量门，再补：
-
+- `superpowers:brainstorming`
+- `superpowers:writing-plans`
+- `superpowers:executing-plans`
 - `superpowers:requesting-code-review`
 - `superpowers:verification-before-completion`
-
-### 阶段 7：收尾
-
-分支收尾时用：
-
 - `superpowers:finishing-a-development-branch`
 
-## 一句话记忆法
+### 一句话理解
 
-主干靠 GSD：
+- `GSD` = 项目骨架
+- `superpowers` = 方法论和质量增强
 
-```text
-/gsd:new-project
-/gsd:plan-phase N
-/gsd:execute-phase N
-/gsd:verify-work N
-/gsd:progress
-```
+如果你是新手，最简单就是：
 
-想法模糊时先上：
+1. 需求不清楚时，先 `superpowers:brainstorming`
+2. 正式开始后，主流程交给 GSD
+3. 想加更严格质量门时，再补 `superpowers`
 
-- `superpowers:brainstorming`
+---
 
-## 什么时候用 `execute-codex-phase`
+## 📚 开源模板项目参考
 
-只有一种情况：
+如果你以后想升级自己的工作流，这几套开源模板都值得知道。它们定位差异很大，不是“都差不多”。
 
-你明确想绕开 GSD 默认执行器，直接把 phase 丢给本地 `codex exec runner`。
+### 1. gstack
 
-也就是说，这条是进阶分支能力，不是默认入口。
+GitHub：
 
-## 最短版本
+- https://github.com/garrytan/gstack
 
-如果你只想记最短版本，就记这个：
+定位：
 
-1. `start-new-project.sh`
-2. 模糊需求先 `superpowers:brainstorming`
-3. 正式立项用 `/gsd:new-project`
-4. phase 用 `/gsd:plan-phase`
-5. 执行用 `/gsd:execute-phase`
-6. 验收用 `/gsd:verify-work`
-7. 需要额外质量门时再用 `superpowers`
+- Garry Tan 风格的多角色工作流
+- 更像“虚拟团队”而不是单技能工具
 
-## 仓库结构说明
+适合：
 
-- `main`
-  - 导航页
-  - 只负责说明怎么选模板
+- 创始人
+- 产品型开发者
+- 想快速推生产代码的人
 
-- `template/gsd-default`
-  - GSD 原生默认执行流
+### 2. BMAD
 
-- `template/claude-codex-default`
-  - Claude 规划，Codex 默认执行流
+GitHub：
 
-## 推荐默认分支
+- https://github.com/bmad-code-org/BMAD-METHOD
 
-如果你只是想把仓库发出去给别人看，`main` 就保持为默认分支。
+定位：
 
-如果你自己以后主要使用其中一套，再手动切到对应模板分支即可。
+- 把 Agile 方法论完整搬进 AI 工作流
+
+适合：
+
+- 团队
+- 中大型项目
+- 需要结构化协作的人
+
+### 3. shanraisshan
+
+GitHub：
+
+- https://github.com/shanraisshan/claude-code-best-practice
+
+定位：
+
+- 最像“课程”的最佳实践模板
+- 适合系统学习 Claude Code 的正确打开方式
+
+适合：
+
+- 想减少踩坑的新手
+- 想直接 clone 一套实践规则的人
+
+### 4. davila7
+
+GitHub：
+
+- https://github.com/davila7/claude-code-templates
+
+定位：
+
+- 更像模板和组件市场
+
+适合：
+
+- 想快速试不同组件的人
+- 想自己拼装工作流的人
+
+### 5. oh-my-claudecode
+
+GitHub：
+
+- https://github.com/Yeachan-Heo/oh-my-claudecode
+
+定位：
+
+- 多代理、多模型并行
+- 更偏“武器库”
+
+适合：
+
+- 复杂项目
+- 想玩多模型协作的人
+
+### 6. superpowers
+
+GitHub：
+
+- https://github.com/obra/superpowers
+
+定位：
+
+- 方法论最强
+- 技能框架可扩展性最好
+
+适合：
+
+- 想长期构建自己技能库的人
+- 重视 TDD、调试、协作方法论的人
+
+### 7. everythingclaude
+
+GitHub：
+
+- https://github.com/affaan-m/everything-claude-code
+
+定位：
+
+- 性能优化很强
+- 更偏重度使用者的长期稳定性
+
+适合：
+
+- 追求性能
+- 高频重度使用 Claude Code 的人
+
+### 8. get-shit-done
+
+GitHub：
+
+- https://github.com/gsd-build/get-shit-done
+
+定位：
+
+- 轻量
+- 直接出活
+- 用 `PROJECT.md / STATE.md` 解决上下文腐烂
+
+适合：
+
+- solo 开发者
+- 小团队
+- 不想搞一堆企业流程的人
+
+### 我对这 8 套的建议
+
+如果你只想要一句实话：
+
+- 新手入门：`shanraisshan` + `davila7`
+- 想快速出活：`get-shit-done`
+- 想把方法论做扎实：`superpowers`
+- 想多模型并行：`oh-my-claudecode`
+- 想创始人式高压推进：`gstack`
+
+### 不要贪多
+
+最实用的建议还是：
+
+- 不要一口气装 8 套
+- 选 1 到 2 套深度使用
+- 真正常驻的通常只有主干一套 + 补充一套
+
+这个仓库当前的思路就是：
+
+- 主干：`GSD`
+- 增强：`superpowers`
+
+---
+
+## 🗂 仓库核心结构说明
+
+本仓库包含如下关键分支树，各分支彼此独立，代码互不干扰：
+
+- 📂 **`main`**   *(你目前在这里: 导航页与指引)*
+- 📂 **`template/gsd-default`**   *(✅ 首选: 原生的 GSD 默认体验)* 
+- 📂 **`template/claude-codex-default`** *(⚡ 进阶: Claude 规划 / Codex 强效干活)*
+- 📂 **`template/standalone-readiness`** *(🔬 前沿: 混合型全自动化底座)*
+
+> **💡 温馨提示**：如果你只是把此仓库作为一个展示或者参考库分享，请保持 `main` 为默认分支；如果你自己要开展新业务，请根据上方指南迅速 `switch` 到对应的模板分支去大显身手吧！
