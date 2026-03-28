@@ -14,18 +14,17 @@ That improves onboarding, but it is still demonstration state. For a real projec
 
 - `/gsd:new-project`
 
-### 2. Execution Layer Is Manifest-First
+### 2. Execution Layer Is Still Early-Stage
 
-`scripts/execute-codex-phase.sh` prepares worker manifests and worktree slots, but does not yet directly run Codex unless an external runner is supplied through `CODEX_RUNNER_SCRIPT`.
-
-That means:
-
-- the execution architecture is in place
-- the fully automated worker bridge is not yet implemented
-
-There is now a documented starter hook:
+`scripts/execute-codex-phase.sh` can now dispatch into a real Codex starter runner through:
 
 - `scripts/codex-runner-example.sh`
+
+That closes the biggest gap, but the runtime is still early-stage because:
+
+- scheduling is still simple round-robin, not true dependency-aware orchestration
+- worktree creation may fail in constrained environments and then fall back to repo root
+- wave reconciliation is stronger than task execution semantics
 
 ### 3. Placeholder Build Tooling
 

@@ -254,11 +254,11 @@ bash scripts/watchdog.sh 1
 
 ## Codex Runner 接入
 
-当前执行层仍然是 `manifest-first`，但模板里已经补了一个 runner 示例：
+当前执行层已经带了一个可直接调用 `codex exec` 的 starter runner：
 
 - [codex-runner-example.sh](/Users/mac/Desktop/2026-money/opc/my-template/scripts/codex-runner-example.sh)
 
-如果你想让执行器真正自动调 Codex，可以这样试：
+如果你想让执行器真正自动调 Codex，可以这样跑：
 
 ```bash
 CODEX_DRY_RUN=0 \
@@ -266,7 +266,24 @@ CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
 bash scripts/execute-codex-phase.sh 1
 ```
 
-默认这个示例脚本只打印参数，不会真的调用 Codex。你后续只要把它替换成自己习惯的 `codex exec` 命令就行。
+这个脚本现在会真实调用 `codex exec`。
+
+它的默认行为：
+
+- 优先在分配到的 worker worktree 中执行
+- 如果 worktree 不可用，会自动回退到仓库根目录执行
+- 不会自动 commit
+- 会把 Codex 最后一条响应写入 `runtime/logs/<task>.codex.txt`
+
+如果你想定制模型或 profile，可以加环境变量：
+
+```bash
+CODEX_MODEL=gpt-5.4 \
+CODEX_PROFILE=default \
+CODEX_DRY_RUN=0 \
+CODEX_RUNNER_SCRIPT=./scripts/codex-runner-example.sh \
+bash scripts/execute-codex-phase.sh 1
+```
 
 如果 sample run 之后想把运行时产物清掉：
 
