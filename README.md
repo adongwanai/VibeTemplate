@@ -22,6 +22,44 @@
 
 ---
 
+## 🗺️ 总流程图
+
+如果你更习惯先看全局图，再决定走哪条路径，就看这张：
+
+```mermaid
+flowchart TD
+    A[进入 main 导航分支] --> B{你更需要哪种工作流?}
+    B -->|最稳 / 团队 / 正式产品| C[切到 template/gsd-default]
+    B -->|Claude规划 + Codex执行| D[切到 template/claude-codex-default]
+    B -->|实验性无人值守探索| E[切到 template/standalone-readiness]
+
+    C --> F[查看该分支 README]
+    D --> F
+    E --> F
+
+    F --> G[运行 start-new-project.sh]
+    G --> H{需求清楚吗?}
+    H -->|不清楚| I[superpowers:brainstorming]
+    H -->|清楚| J[/gsd:new-project]
+    I --> J
+
+    J --> K[/gsd:plan-phase 1]
+    K --> L{默认执行方式}
+    L -->|gsd-default| M[/gsd:execute-phase 1]
+    L -->|claude-codex-default| N[/execute-codex-phase 1]
+    L -->|standalone-readiness| O[/24h-loop 或 watchdog]
+
+    M --> P[/gsd:verify-work 1]
+    N --> P
+    O --> P
+    P --> Q{继续下一阶段?}
+    Q -->|是| R[/gsd:plan-phase 2]
+    R --> L
+    Q -->|否| S[review / finish branch / ship]
+```
+
+---
+
 ## 🚀 极简操作：一键切入与启动
 
 不知道选哪个？**默认选 `template/gsd-default` 绝对不会出错。**
